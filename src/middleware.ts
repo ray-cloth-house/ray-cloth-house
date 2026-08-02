@@ -4,12 +4,27 @@ import { jwtVerify } from 'jose';
 
 const protectedPaths = ['/dashboard', '/api/categories', '/api/suppliers', '/api/buyers', '/api/stock', '/api/sales', '/api/payments', '/api/expenses', '/api/ledgers', '/api/dashboard', '/api/users', '/api/reports', '/api/returns'];
 
-async function verifyJWT(token: string): Promise<{ valid: boolean; payload?: any }> {
+// async function verifyJWT(token: string): Promise<{ valid: boolean; payload?: any }> {
+//   try {
+//     const secret = new TextEncoder().encode(process.env.SESSION_SECRET);
+//     const { payload } = await jwtVerify(token, secret);
+//     return { valid: true, payload };
+//   } catch {
+//     return { valid: false };
+//   }
+// }
+
+async function verifyJWT(token: string) {
   try {
     const secret = new TextEncoder().encode(process.env.SESSION_SECRET);
+
     const { payload } = await jwtVerify(token, secret);
+
+    console.log("JWT VERIFIED:", payload);
+
     return { valid: true, payload };
-  } catch {
+  } catch (err) {
+    console.log("JWT ERROR:", err);
     return { valid: false };
   }
 }
